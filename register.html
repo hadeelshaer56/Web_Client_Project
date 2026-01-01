@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TubeTracker | Register</title>
+
+  <!-- Bootswatch + Icons -->
+  <link rel="stylesheet" href="https://bootswatch.com/5/cyborg/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="p-4">
+  <div class="container" style="max-width: 820px;">
+
+    <!-- Simple top nav -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <a class="btn btn-outline-light" href="index.html">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <h1 class="h3 m-0 text-primary">Create account</h1>
+      <a class="btn btn-outline-info" href="login.html">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </a>
+    </div>
+
+    <!-- Errors / success messages -->
+    <div id="msgBox" class="alert d-none" role="alert"></div>
+
+    <div class="card border-primary">
+      <div class="card-body">
+        <form id="registerForm" class="row g-3" novalidate>
+
+          <div class="col-md-6">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" placeholder="e.g. username55" required />
+          </div>
+
+          <div class="col-md-6">
+            <label for="firstName" class="form-label">First name</label>
+            <input type="text" id="firstName" class="form-control" placeholder="e.g. user" required />
+          </div>
+
+          <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" class="form-control" placeholder="Min 6 chars" required />
+            <div class="form-text">
+              Must include: 1 letter, 1 number, 1 special character.
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="confirmPassword" class="form-label">Confirm password</label>
+            <input type="password" id="confirmPassword" class="form-control" required />
+          </div>
+
+          <div class="col-12">
+            <label for="imageUrl" class="form-label">Profile image URL</label>
+            <input type="url" id="imageUrl" class="form-control" placeholder="https://..." required />
+            <div class="form-text">Paste a direct image link (jpg/png/webp).</div>
+          </div>
+
+          <div class="col-12 d-flex flex-wrap gap-2 align-items-center">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-user-plus"></i> Register
+            </button>
+            <button type="reset" class="btn btn-outline-secondary">Clear</button>
+          </div>
+
+          <!-- Tiny preview (optional) -->
+          <div class="col-12 mt-2">
+            <div class="d-flex align-items-center gap-3">
+              <img id="imgPreview" alt="preview" src="" referrerpolicy="no-referrer" loading="lazy" style="width:64px;height:64px;object-fit:cover;border-radius:50%;display:none;" />
+              <span id="imgPreviewHint" class="text-muted small">Image preview will appear here.</span>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <p class="text-center text-muted mt-4 small">Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+  <script src="register.js"></script>
+</body>
+</html>

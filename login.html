@@ -1,0 +1,61 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TubeTracker | Login</title>
+
+  <!-- Bootswatch (Cyborg) + Icons -->
+  <link rel="stylesheet" href="https://bootswatch.com/5/cyborg/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="p-4">
+  <div class="container" style="max-width: 720px;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <a class="btn btn-outline-light" href="index.html">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <h1 class="h3 m-0 text-primary">Login</h1>
+      <a class="btn btn-outline-warning" href="register.html">
+        <i class="fa-solid fa-user-plus"></i> Register
+      </a>
+    </div>
+
+    <div id="msgBox" class="alert d-none" role="alert"></div>
+
+    <div class="card border-primary">
+      <div class="card-body">
+        <form id="loginForm" class="row g-3" novalidate>
+
+          <div class="col-12">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" required />
+          </div>
+
+          <div class="col-12">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" class="form-control" required />
+          </div>
+
+          <div class="col-12 d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-right-to-bracket"></i> Login
+            </button>
+            <button type="reset" class="btn btn-outline-secondary">Clear</button>
+          </div>
+
+          <div class="col-12">
+            <p class="text-muted small m-0">No account yet? <a href="register.html">Create one</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
