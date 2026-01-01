@@ -169,7 +169,9 @@ function createYTPlayer(videoId) {
     events: {
       onStateChange: (event) => {
         if (event.data === YT.PlayerState.ENDED) {
-          playAtIndex(playingIndex + 1);
+          if (playingVideos.length > 1) {
+            playAtIndex(playingIndex + 1);
+          }
         }
       }
     }
@@ -411,22 +413,45 @@ function renderSongs(playlist) {
         />
       </td>
       <td class="text-end">
-        <a class="btn btn-sm btn-outline-info me-2" href="${v.url}" target="_blank" rel="noopener">
+        <button class="btn btn-sm btn-outline-info me-2" type="button" data-action="play" data-videoid="${v.videoId}">
           <i class="fa-solid fa-play"></i> Play
+        </button>
+        <a class="btn btn-sm btn-outline-light me-2" href="${v.url || '#'}" target="_blank" rel="noopener" ${v.url ? '' : 'aria-disabled="true"'}>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
         </a>
-        <button class="btn btn-sm btn-outline-danger" type="button" data-videoid="${v.videoId}">
+        <button class="btn btn-sm btn-outline-danger" type="button" data-action="remove" data-videoid="${v.videoId}">
           <i class="fa-solid fa-trash"></i> Remove
         </button>
       </td>
     `;
 
-    tr.querySelector('button.btn-outline-danger').addEventListener('click', (e) => {
+    tr.querySelector('button[data-action="remove"]').addEventListener('click', (e) => {
       const vid = e.currentTarget.getAttribute('data-videoid');
       const pl = playlists.find(p => p.id === activePlaylistId);
       if (!pl) return;
       pl.videos = (pl.videos || []).filter(x => (x.videoId || extractVideoId(x.url || '')) !== vid);
       setUserPlaylists(user.username, playlists);
       renderSongs(pl);
+    });
+
+    tr.querySelector('button[data-action="play"]').addEventListener('click', (e) => {
+      const vid = e.currentTarget.getAttribute('data-videoid');
+      const pl = playlists.find(p => p.id === activePlaylistId) || null;
+      if (!pl) return;
+
+      const vids = Array.isArray(pl.videos) ? pl.videos.map(normalizeVideo).filter(v => v.videoId) : [];
+      if (!vids.length) {
+        alert('This playlist is empty. Add songs first.');
+        return;
+      }
+
+      const idx = vids.findIndex(v => v.videoId === vid);
+      playingPlaylistId = activePlaylistId;
+      playingVideos = vids;
+      playingIndex = idx >= 0 ? idx : 0;
+
+      playlistPlayerModal.show();
+      playAtIndex(playingIndex);
     });
 
     // Persist rating changes
@@ -449,6 +474,7 @@ function renderSongs(playlist) {
         return nx;
       });
       setUserPlaylists(user.username, playlists);
+      renderSidebar();
     });
 
     songsTbodyEl.appendChild(tr);
