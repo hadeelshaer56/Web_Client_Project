@@ -1,7 +1,19 @@
 function getCurrentUser() {
-  const raw = sessionStorage.getItem('currentUser');
+  // Prefer sessionStorage, but fall back to localStorage so auth survives reloads/new tabs.
+  const rawSession = sessionStorage.getItem('currentUser');
+  const rawLocal = localStorage.getItem('currentUser');
+  const raw = rawSession || rawLocal;
   if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
+  try {
+    const user = JSON.parse(raw);
+    // Keep sessionStorage in sync for the rest of the app.
+    if (!rawSession) {
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
+    }
+    return user;
+  } catch {
+    return null;
+  }
 }
 
 function requireAuth() {
@@ -10,11 +22,14 @@ function requireAuth() {
     window.location.href = 'login.html';
     return null;
   }
+  // Also persist to localStorage so a reload/new tab doesn't lose auth.
+  localStorage.setItem('currentUser', JSON.stringify(user));
   return user;
 }
 
 function logout() {
   sessionStorage.removeItem('currentUser');
+  localStorage.removeItem('currentUser');
   window.location.href = 'login.html';
 }
 
@@ -416,9 +431,6 @@ function renderSongs(playlist) {
         <button class="btn btn-sm btn-outline-info me-2" type="button" data-action="play" data-videoid="${v.videoId}">
           <i class="fa-solid fa-play"></i> Play
         </button>
-        <a class="btn btn-sm btn-outline-light me-2" href="${v.url || '#'}" target="_blank" rel="noopener" ${v.url ? '' : 'aria-disabled="true"'}>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
-        </a>
         <button class="btn btn-sm btn-outline-danger" type="button" data-action="remove" data-videoid="${v.videoId}">
           <i class="fa-solid fa-trash"></i> Remove
         </button>
